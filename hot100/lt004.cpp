@@ -6,46 +6,49 @@ using namespace std;
 class Solution {
 public:
 #define dd double
+	dd getAns(vector<int> nums) {
+		int mid=nums.size()-1>>1;
+		if(nums.size()&1) return nums[mid];
+		else return dd(nums[mid]+nums[mid+1])/2;
+	}
 	double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-		int n=nums1.size(),m=nums2.size();
-		int delNum=m+n-1>>1;
-		int l1=0, l2=0, r1=n-1, r2=m-1;
-		int cnt1=0, cnt2=0, flag1=0, flag2=0;
-		while (1) {
-			bool isOod1=(r1-l1+1)&1, isOod2=(r2-l2+1)&1;
-			int mid1=l1+r1>>1, mid2=l2+r2>>1;
-			dd x1 = nums1[mid1], x2=nums2[mid2];
-			if (isOod1) x1 = (x1 + nums1[mid1]) / 2;
-			if (isOod2) x2 = (x2 + nums2[mid2]) / 2;
-			if (x1 <= x2) {
-				if (!isOod1) mid1++;
-				if (cnt1+mid1-l1 >= delNum) {flag1=1; break;}
-				cnt1 = cnt1+mid1-l1;
-				l1=mid1;
-				if (cnt2+r2-mid2 >= delNum) {flag2=1; break;}
-				cnt2=cnt2+r2-mid2;
-				r2=mid2;
-			}
-			else {
-				if (!isOod2) mid2++;
-				if (cnt1+mid2-l2 >= delNum) {flag1=2; break;}
-				cnt1=cnt1+mid2-l2;
-				l2=mid2;
-				if (cnt2+r1-mid1 >= delNum) {flag2=2; break;}
-				cnt2=cnt2+r1-mid1;
-				r1=mid1;
+		if(nums1.size()<nums2.size()) swap(nums1, nums2);
+		int n=nums1.size(), m=nums2.size();
+		if(!m) return getAns(nums1);
+		int pos = n+m+1>>1, x=0;
+		int l=0,r=n-1;
+		while(l<=r) {
+			int mid=l+r>>1;
+			auto p =lower_bound(nums2.begin(), nums2.end(), nums1[mid]);
+			int nums = mid+1 + p-nums2.begin();
+			if(nums>=pos) r=mid-1, x=mid;
+			else l=mid+1;
+		}
+		auto p = lower_bound(nums2.begin(), nums2.end(), nums1[x]);
+		int nums = x + p-nums2.begin();
+		dd ans=0;
+		if(nums>=pos) {
+			ans=nums2[pos-x-1];
+			if(!(n+m&1)) {
+				if(pos-x<nums2.size()&&nums2[pos-x]<nums1[x]) ans = (ans+nums2[pos-x]) / 2;
+				else ans = (ans + nums1[x]) / 2;
 			}
 		}
-		if (flag1==1) return nums1[l1+delNum-cnt1];
-		if (flag1==2) return nums2[l2+delNum-cnt1];
-
-		if (flag2==1) return nums1[r1-delNum+cnt1];
-		if (flag2==2) return nums2[r2-delNum+cnt2];
+		else {
+			ans=nums1[x];
+			if(!(n+m&1)) {
+				p = lower_bound(nums2.begin(), nums2.end(), ans);
+				if(x==nums1.size()-1) ans = (ans + *p) / 2;
+				else if(p==nums2.end()) ans = (ans + nums1[x+1])/2;
+				else ans = (ans + min(nums1[x+1], *p)) / 2;
+			}
+		}
+		return ans;
 	}
 };
 int main() {
 	Solution s;
-	vector<int> nums1 = {1,2};
-	vector<int> nums2 = {3,4,5};
+	vector<int> nums1 = {1};
+	vector<int> nums2 = {4,5};
 	cout<<s.findMedianSortedArrays(nums1, nums2);
 }
