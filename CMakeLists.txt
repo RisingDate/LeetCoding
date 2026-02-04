@@ -5,4 +5,5 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(LeetCoding
         hot100/lt416.cpp
-        hot100/lt062.cpp)
+        hot100/lt062.cpp
+        hot100/lt064.cpp)
