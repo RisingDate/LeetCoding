@@ -8,4 +8,5 @@ add_executable(LeetCoding
         hot100/lt062.cpp
         hot100/lt064.cpp
         hot100/lt005.cpp
-        hot100/lt1143.cpp)
+        hot100/lt1143.cpp
+        hot100/lt169.cpp)
