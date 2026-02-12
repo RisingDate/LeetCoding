@@ -4,4 +4,4 @@ project(Project1)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(LeetCoding
-        hot100/lt114.cpp)
+        hot100/lt076.cpp)
