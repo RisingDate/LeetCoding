@@ -1,3 +1,6 @@
+//
+// Created by 17732 on 26-4-8.
+//
 #include<bits/stdc++.h>
 using namespace std;
 struct ListNode {
@@ -14,7 +17,7 @@ public:
 	}
 	ListNode* reverseKGroup(ListNode* head, int k) {
 		if (!head) return nullptr;
-        ListNode* p=nullptr;
+		ListNode* p=nullptr;
 		ListNode* q=head;
 		ListNode* nextP=getNextP(head,k-1);
 		ListNode* res=head;
